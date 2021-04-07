@@ -1,9 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
-from tkinter import font
-from tkinter import colorchooser
 from PIL import ImageTk  # $ pip install pillow
-
+import re
 
 root = Tk()
 root.title('Compiler')
@@ -137,6 +135,14 @@ def paste_text(e):
             position = text1.index(INSERT)
             text1.insert(position, selected)
 
+def regular_vr(e):
+    text2.delete(1.0,END)
+    # Check to see if keyboard shortcut used
+    pattern= r'(?<!\d)(?:0?[1-9]|[12][0-9]|3[01])-(?:0?[1-9]|1[0-2])-(?:19[0-9][0-9]|20[01][0-9])(?!\d)'
+    patternFIO='[А-ЯЁ][а-яё]+\s+[А-ЯЁ][а-яё]+(?:\s+[А-ЯЁ][а-яё]+)?'
+    stuff= re.findall(pattern,text1.get(1.0,END))
+    stuff=stuff+re.findall(patternFIO,text1.get(1.0,END))
+    text2.insert(END,stuff)
 
 # Select all Text
 def select_all(e):
@@ -191,6 +197,11 @@ Cut.pack(side=LEFT)
 PasteImage = ImageTk.PhotoImage(file="8.png")
 Paste = Button(frame_top, image=PasteImage, padx=2, command=lambda: paste_text(False))
 Paste.pack(side=LEFT)
+
+RegImage = ImageTk.PhotoImage(file="8.png")
+reg_vr = Button(frame_top, image=RegImage, padx=2, command=lambda: regular_vr(False))
+reg_vr.pack(side=LEFT)
+
 
 # Create a toolbar frame
 toolbar_frame1 = Frame(root)
